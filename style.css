@@ -89,3 +89,24 @@ td{
 tbody tr:hover{
     background:#162447;
 }
+
+.attribution {
+    margin-top: 18px;
+    text-align: right;
+    font-size: 13px;
+    color: #8f9bb3;
+}
+
+.attribution a {
+    color: #2494ff;
+    text-decoration: none;
+}
+
+.attribution a:hover {
+    text-decoration: underline;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
