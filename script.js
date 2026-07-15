@@ -1,3 +1,4 @@
+const progressBar = document.getElementById("progressBar");
 const checkBtn = document.getElementById("checkBtn");
 const domainsInput = document.getElementById("domains");
 const resultBody = document.getElementById("resultBody");
@@ -16,7 +17,8 @@ checkBtn.addEventListener("click", async () => {
 
     resultBody.innerHTML = "";
     progressText.textContent = `Checking 0/${domains.length}...`;
-
+    progressBar.style.width = "0%";
+    
     checkBtn.disabled = true;
     checkBtn.textContent = "Checking...";
 
@@ -75,6 +77,9 @@ checkBtn.addEventListener("click", async () => {
         }
 
         completed++;
+        const percent = (completed / domains.length) * 100;
+
+        progressBar.style.width = percent + "%";
         progressText.textContent =
             `Checking ${completed}/${domains.length}...`;
     }
@@ -84,6 +89,7 @@ checkBtn.addEventListener("click", async () => {
 
     checkBtn.disabled = false;
     checkBtn.textContent = "Check Metrics";
+    progressBar.style.width = "100%";
 });
 
 function cleanDomain(value) {
