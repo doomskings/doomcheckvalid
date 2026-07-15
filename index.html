@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Moz Checker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Bulk Moz/Ahref Checker</h1>
+    <p>Masukkan daftar domain / URL</p>
+
+    <textarea
+        id="domains"
+        placeholder="https://google.com&#10;https://facebook.com&#10;https://youtube.com">
+    </textarea>
+
+    <button id="checkBtn">
+        Check Metrics
+    </button>
+
+    <div class="result">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Domain</th>
+                <th>DR</th>
+                <th>DA</th>
+                <th>PA</th>
+                <th>SS</th>
+                <th>Traffic</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="resultBody">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
