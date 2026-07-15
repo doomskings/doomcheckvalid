@@ -1,6 +1,7 @@
 const checkBtn = document.getElementById("checkBtn");
 const domainsInput = document.getElementById("domains");
 const resultBody = document.getElementById("resultBody");
+const progressText = document.getElementById("progressText");
 
 checkBtn.addEventListener("click", async () => {
     const domains = domainsInput.value
@@ -14,15 +15,19 @@ checkBtn.addEventListener("click", async () => {
     }
 
     resultBody.innerHTML = "";
+    progressText.textContent = `Checking 0/${domains.length}...`;
+
     checkBtn.disabled = true;
     checkBtn.textContent = "Checking...";
+
+    let completed = 0;
 
     for (const domain of domains) {
         const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>${escapeHtml(domain)}</td>
-            <td class="dr-value">Checking...</td>
+            <td>Checking...</td>
             <td>-</td>
             <td>-</td>
             <td>-</td>
@@ -68,7 +73,14 @@ checkBtn.addEventListener("click", async () => {
                 <td>❌</td>
             `;
         }
+
+        completed++;
+        progressText.textContent =
+            `Checking ${completed}/${domains.length}...`;
     }
+
+    progressText.textContent =
+        `Checking ${domains.length}/${domains.length} (Done).`;
 
     checkBtn.disabled = false;
     checkBtn.textContent = "Check Metrics";
