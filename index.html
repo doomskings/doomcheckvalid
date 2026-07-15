@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk Moz Checker</title>
+    <title>SEO Bulk Checker</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,33 +13,60 @@
 
     <div class="container">
 
-        <h1>Bulk Moz/Ahref Checker</h1>
-        <p>Masukkan daftar domain / URL</p>
+        <div class="header">
+            <h1>SEO Bulk Checker</h1>
+            <p>Bulk Domain Rating Checker powered by Ahrefs</p>
+        </div>
 
-        <textarea
-            id="domains"
-            placeholder="https://google.com&#10;https://facebook.com&#10;https://youtube.com"></textarea>
+        <div class="card">
 
-        <button id="checkBtn">
-            Check Metrics
-        </button>
+            <label for="domains">
+                Daftar Domain / URL
+            </label>
 
-<p id="progressText"></p>
+            <textarea
+                id="domains"
+                placeholder="google.com&#10;facebook.com&#10;s2vm.com.au"></textarea>
 
-<div class="progress">
-    <div
-        class="progress-bar"
-        id="progressBar">
-    </div>
-</div>
-        
-        <div class="result">
+            <div class="action">
 
-            <h2>Hasil Bulk Check</h2>
+                <button id="checkBtn">
+                    Check Metrics
+                </button>
+
+                <span id="progressText">
+                    Ready.
+                </span>
+
+            </div>
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="table-header">
+
+                <h2>Hasil Bulk Check</h2>
+
+                <span id="totalResult">
+                    Total: 0
+                </span>
+
+            </div>
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Domain</th>
                         <th>DR</th>
@@ -49,19 +76,25 @@
                         <th>Traffic</th>
                         <th>Status</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="resultBody">
+
                 </tbody>
 
             </table>
 
-            <p class="attribution">
+            <div class="footer">
+
                 Domain Rating by
-                <a href="https://ahrefs.com" target="_blank" rel="noopener noreferrer">
+                <a
+                    href="https://ahrefs.com"
+                    target="_blank">
                     Ahrefs
                 </a>
-            </p>
+
+            </div>
 
         </div>
 
