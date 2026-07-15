@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,58 +8,60 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Bulk Moz/Ahref Checker</h1>
-    <p>Masukkan daftar domain / URL</p>
+        <h1>Bulk Moz/Ahref Checker</h1>
+        <p>Masukkan daftar domain / URL</p>
 
-    <textarea
-        id="domains"
-        placeholder="https://google.com&#10;https://facebook.com&#10;https://youtube.com">
-    </textarea>
+        <textarea
+            id="domains"
+            placeholder="https://google.com&#10;https://facebook.com&#10;https://youtube.com"></textarea>
 
-    <button id="checkBtn">
-        Check Metrics
-    </button>
+        <button id="checkBtn">
+            Check Metrics
+        </button>
 
-<div class="result">
+        <p id="progressText"></p>
 
-<h2>Hasil Bulk Check</h2>
+        <div class="result">
 
-<table>
+            <h2>Hasil Bulk Check</h2>
 
-<thead>
+            <table>
 
-<tr>
-<th>Domain</th>
-<th>DR</th>
-<th>DA</th>
-<th>PA</th>
-<th>SS</th>
-<th>Traffic</th>
-<th>Status</th>
-</tr>
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>DR</th>
+                        <th>DA</th>
+                        <th>PA</th>
+                        <th>SS</th>
+                        <th>Traffic</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
 
-</thead>
+                <tbody id="resultBody">
+                </tbody>
 
-<tbody id="resultBody">
+            </table>
 
-</tbody>
+            <p class="attribution">
+                Domain Rating by
+                <a href="https://ahrefs.com" target="_blank" rel="noopener noreferrer">
+                    Ahrefs
+                </a>
+            </p>
 
-</table>
-<p class="attribution">
-    Domain Rating by
-    <a href="https://ahrefs.com" target="_blank" rel="noopener noreferrer">
-        Ahrefs
-    </a>
-</p>
-</div>
+        </div>
 
-</div>
+    </div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
