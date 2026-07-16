@@ -1,68 +1,131 @@
-export async function onRequest(context) {
-
-    const url = new URL(context.request.url);
-    const target = url.searchParams.get("target");
-
-    if (!target) {
-        return Response.json({
-            success: false,
-            error: "Target domain kosong"
-        }, { status: 400 });
-    }
-
+export async function onRequestGet(context) {
     try {
+        const url = new URL(context.request.url);
+        const target = cleanDomain(url.searchParams.get("target"));
 
-        // Resolve domain -> IP
-        const dns = await fetch(
-            `https://dns.google/resolve?name=${encodeURIComponent(target)}&type=A`
-        );
-
-        const dnsData = await dns.json();
-
-        if (!dnsData.Answer || dnsData.Answer.length === 0) {
-
-            return Response.json({
-                success: false,
-                error: "IP tidak ditemukan"
-            });
-
+        if (!target) {
+            return jsonResponse(
+                {
+                    success: false,
+                    error: "Target domain belum diisi"
+                },
+                400
+            );
         }
 
-        const ip = dnsData.Answer[0].data;
-
-        // Cari negara berdasarkan IP
-        const geo = await fetch(
-            `https://ipwho.is/${ip}`
+        // Domain -> IPv4 menggunakan Google DNS
+        const dnsResponse = await fetch(
+            `https://dns.google/resolve?name=${encodeURIComponent(target)}&type=A`,
+            {
+                headers: {
+                    Accept: "application/dns-json"
+                }
+            }
         );
 
-        const geoData = await geo.json();
+        if (!dnsResponse.ok) {
+            throw new Error(`DNS gagal: HTTP ${dnsResponse.status}`);
+        }
 
-        return Response.json({
+        const dnsData = await dnsResponse.json();
 
+        const ipv4Record = dnsData.Answer?.find((record) => {
+            return record.type === 1 && isIPv4(record.data);
+        });
+
+        if (!ipv4Record) {
+            return jsonResponse(
+                {
+                    success: false,
+                    domain: target,
+                    error: "Alamat IPv4 tidak ditemukan"
+                },
+                404
+            );
+        }
+
+        const ip = ipv4Record.data;
+
+        // IP -> kode negara
+        const countryResponse = await fetch(
+            `https://api.country.is/${encodeURIComponent(ip)}`,
+            {
+                headers: {
+                    Accept: "application/json"
+                }
+            }
+        );
+
+        if (!countryResponse.ok) {
+            throw new Error(
+                `Country API gagal: HTTP ${countryResponse.status}`
+            );
+        }
+
+        const countryData = await countryResponse.json();
+        const countryCode = countryData.country || null;
+
+        if (!countryCode) {
+            throw new Error("Negara tidak ditemukan");
+        }
+
+        let countryName = countryCode;
+
+        try {
+            const regionNames = new Intl.DisplayNames(
+                ["en"],
+                { type: "region" }
+            );
+
+            countryName =
+                regionNames.of(countryCode) || countryCode;
+        } catch {
+            // Tetap gunakan kode negara jika Intl.DisplayNames gagal.
+        }
+
+        return jsonResponse({
             success: true,
-
             domain: target,
-
-            ip: ip,
-
-            country: geoData.country || "-",
-
-            country_code: geoData.country_code || "-",
-
-            city: geoData.city || "-"
-
+            ip,
+            country: countryName,
+            country_code: countryCode
         });
+    } catch (error) {
+        return jsonResponse(
+            {
+                success: false,
+                error: error.message || "Terjadi kesalahan server"
+            },
+            500
+        );
+    }
+}
 
-    } catch (err) {
-
-        return Response.json({
-
-            success: false,
-
-            error: err.message
-
-        });
-
+function cleanDomain(value) {
+    if (!value) {
+        return "";
     }
 
+    return value
+        .trim()
+        .replace(/^https?:\/\//i, "")
+        .replace(/^www\./i, "")
+        .split("/")[0]
+        .split("?")[0]
+        .split("#")[0]
+        .toLowerCase();
+}
+
+function isIPv4(value) {
+    return /^(\d{1,3}\.){3}\d{1,3}$/.test(value);
+}
+
+function jsonResponse(data, status = 200) {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            "Cache-Control": "public, max-age=3600"
+        }
+    });
 }
